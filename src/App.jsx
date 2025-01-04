@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
+import gitlabLogo from './assets/gitlab.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
@@ -15,18 +16,25 @@ function App() {
         <a href="https://react.dev" target="_blank">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
+        <a href="https://gitlab.com" target="_blank">
+          <img src={gitlabLogo} className="logo" alt="GitLab logo" />
+        </a>
       </div>
-      <h1>Learn GitLab</h1>
+      <h1>Learn GitLab CI/CD</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+        <h2>Welcome to the GitLab CI/CD world.</h2>
         <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
+          Dive into the world of continuous integration and continuous delivery (CI/CD) by deploying this simple app. Whether you’re a developer, a project manager, or just curious about DevOps practices, this course will guide you through the fundamentals of GitLab CI/CD.
+        </p>
+        <p>
+          Hint: Edit <code>src/App.jsx</code> to make chnages to this page.
         </p>
       </div>
       <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+        Created by Valentin Despa. 
+      </p>
+      <p className="read-the-docs">
+        Application version: 1
       </p>
     </>
   )

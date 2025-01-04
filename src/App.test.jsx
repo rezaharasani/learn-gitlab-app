@@ -11,10 +11,15 @@ describe('an always true assertion', () => {
 describe('App', () => {
   it('renders the App component', () => {
     render(<App />)
-
-    const linkElement = screen.getByText(/Learn GitLab/i);
-    expect(linkElement).toBeInTheDocument();
+    const textElement = screen.getByText(/Learn GitLab/i);
+    expect(textElement).toBeInTheDocument();
 
     //screen.debug(); // prints out the jsx in the App component unto the command line
+  })
+
+  it('shows the GitLab logo', () => {
+    render(<App />)
+    const logo = screen.getByAltText('GitLab logo');
+    expect(logo).toBeInTheDocument();
   })
 })

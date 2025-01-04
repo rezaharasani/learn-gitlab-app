@@ -10,6 +10,11 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: './tests/setup.js',
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/e2e/**'
+    ],
     reporters: ['verbose', 'junit', 'html'],
     outputFile: {
       junit: './reports/junit.xml',

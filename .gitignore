@@ -12,6 +12,7 @@ dist
 dist-ssr
 build
 reports
+test-results
 *.local
 
 # Editor directories and files

@@ -8,7 +8,7 @@
     "build": "vite build",
     "test": "vitest",
     "e2e": "npx playwright test",
-    "lint": "eslint --format gitlab --output-file reports/linter.json .",
+    "lint": "eslint --format gitlab .",
     "preview": "vite preview"
   },
   "dependencies": {

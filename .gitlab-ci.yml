@@ -1,5 +1,12 @@
-test:
+stages:
+    - build
+
+build_website:
     image: node:24.7.0-alpine
+    stage: build
     script:
         - node --version
         - npm --version
+        - ls -la
+        - npm ci
+        - npm run build

@@ -2,6 +2,22 @@
 
 This simple web application uses React + Vite.
 
+The project root directory structure includes the following files and directories:
+```
+.
+├── e2e
+├── eslint.config.js
+├── index.html
+├── package-lock.json
+├── package.json
+├── playwright.config.cjs
+├── public
+├── README.md
+├── src
+├── tests
+└── vite.config.js
+```
+
 The following commands need to run `nodejs` project on project root directory: 
 
 * **Step1**: install all nodejs dependencies:

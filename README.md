@@ -4,11 +4,11 @@ This simple web application uses React + Vite.
 
 The following commands need to run `nodejs` project on project root directory: 
 
-* Step1. install all nodejs dependencies:
+* **Step1**: install all nodejs dependencies:
     ```
-    npm install
+    => npm install
     ```
-* Step2. Then build project:
+* **Step2**: Then build project:
     ```
     => npm run build 
     
@@ -24,11 +24,16 @@ The following commands need to run `nodejs` project on project root directory:
     ✓ built in 299ms
     ```
 
-* Step3: Install `serve` package in order to run nodejs correctly:
+* **Step3**: Install `serve` package in order to run nodejs correctly:
     ```
-    npm install -g serve
+    => npm install -g serve
+  
+    added 88 packages in 9s
+    
+    24 packages are looking for funding
+      run `npm fund` for details
     ```
-* Step4: In the last step, serve nodejs project from build directory:
+* **Step4**: In the last step, serve nodejs project from build directory:
     ```
     => serve -s build
     
@@ -44,7 +49,7 @@ The following commands need to run `nodejs` project on project root directory:
     └────────────────────────────────────────────┘
     ```
 
-* Step5: At last, enter `http://localhost:3000` link on your browser to show following page:
-  * ![NodeJs_Project_FirstPage.jpg](src/img/NodeJs_Project_FirstPage.jpg)
+* **Step5**: At last, enter `http://localhost:3000` link on your browser to show following page:
+  ![NodeJs_Project_FirstPage.jpg](src/img/NodeJs_Project_FirstPage.jpg)
 
 As you can see, above page represents application version 1.

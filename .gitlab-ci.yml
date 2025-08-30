@@ -12,3 +12,12 @@ build:
     artifacts:
         paths:
             - build/
+
+test:
+    image: node:24.7.0-alpine
+    stage: test
+    script:
+        - apk add curl
+        - npm install -g serve
+        - serve -s build
+        - curl -I localhost:3000

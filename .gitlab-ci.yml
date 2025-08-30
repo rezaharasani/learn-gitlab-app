@@ -20,5 +20,6 @@ test:
     script:
         - apk add curl
         - npm install -g serve
-        - serve -s build
+        - serve -s build &
+        - sleep 10
         - curl -I localhost:3000

@@ -36,9 +36,3 @@ test_unit:
     script:
         - npm ci
         - npm test
-    artifacts:
-        when: always
-        paths:
-            - reports/html/junit.xml
-        reports:
-            junit: junit.xml

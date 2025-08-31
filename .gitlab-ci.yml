@@ -37,4 +37,4 @@ test:
         paths:
             - reports/html/junit.xml
         reports:
-            junit: reports/html/junit.xml
+            junit: junit.xml

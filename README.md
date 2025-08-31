@@ -69,3 +69,4 @@ The following commands need to run `nodejs` project on project root directory:
   ![NodeJs_Project_FirstPage.jpg](src/img/NodeJs_Project_FirstPage.jpg)
 
 As you can see, above page represents application version 1.
+

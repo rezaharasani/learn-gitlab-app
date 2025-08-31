@@ -49,6 +49,7 @@ The following commands need to run `nodejs` project on project root directory:
     24 packages are looking for funding
       run `npm fund` for details
     ```
+
 * **Step4**: In the last step, serve nodejs project from build directory:
     ```
     => serve -s build
@@ -69,4 +70,3 @@ The following commands need to run `nodejs` project on project root directory:
   ![NodeJs_Project_FirstPage.jpg](src/img/NodeJs_Project_FirstPage.jpg)
 
 As you can see, above page represents application version 1.
-

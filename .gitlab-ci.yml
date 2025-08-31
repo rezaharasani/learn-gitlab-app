@@ -39,4 +39,4 @@ test_unit:
     artifacts:
         when: always
         reports:
-            junit: reports/html/junit.xml
+            junit: reports/junit.xml

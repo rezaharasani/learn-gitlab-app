@@ -1,6 +1,5 @@
 stages:
     - build
-    - setup
     - test
 
 build:
@@ -15,18 +14,23 @@ build:
         paths:
             - build/
 
-setup:
+test_artifacts:
+    image: alpine
+    stage: test
+    script:
+        - test -f build/index.html
+
+test_service_healthy:
     image: node:24.7.0-alpine
-    stage: setup
+    stage: test
     script:
         - apk add curl
         - npm install -g serve
         - serve -s build &
-        - test -f build/index.html
         - sleep 10
         - curl -I localhost:3000
 
-test:
+test_unit:
     image: node:24.7.0-alpine
     stage: test
     script:

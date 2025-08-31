@@ -1,5 +1,6 @@
 stages:
     - build
+    - setup
     - test
 
 build:
@@ -14,12 +15,20 @@ build:
         paths:
             - build/
 
-test:
+setup:
     image: node:24.7.0-alpine
-    stage: test
+    stage: setup
     script:
         - apk add curl
         - npm install -g serve
         - serve -s build &
+        - test -f build/index.html
         - sleep 10
         - curl -I localhost:3000
+
+test:
+    image: node:24.7.0-alpine
+    stage: test
+    script:
+        - npm ci
+        - npm test

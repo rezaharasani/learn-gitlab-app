@@ -1,42 +1,42 @@
 stages:
-    - build
-    - test
+  - build
+  - test
 
 build:
-    image: node:24.7.0-alpine
-    stage: build
-    script:
-        - node --version
-        - npm --version
-        - npm ci
-        - npm run build
-    artifacts:
-        paths:
-            - build/
+  image: node:24.7.0-alpine
+  stage: build
+  script:
+    - node --version
+    - npm --version
+    - npm ci
+    - npm run build
+  artifacts:
+    paths:
+      - build/
 
 test_artifacts:
-    image: alpine
-    stage: test
-    script:
-        - test -f build/index.html
+  image: alpine
+  stage: test
+  script:
+    - test -f build/index.html
 
 test_service_healthy:
-    image: node:24.7.0-alpine
-    stage: test
-    script:
-        - apk add curl
-        - npm install -g serve
-        - serve -s build &
-        - sleep 10
-        - curl -I localhost:3000
+  image: node:24.7.0-alpine
+  stage: test
+  script:
+    - apk add curl
+    - npm install -g serve
+    - serve -s build &
+    - sleep 10
+    - curl -I localhost:3000
 
 test_unit:
-    image: node:24.7.0-alpine
-    stage: test
-    script:
-        - npm ci
-        - npm test
-    artifacts:
-        when: always
-        reports:
-            junit: reports/junit.xml
+  image: node:24.7.0-alpine
+  stage: test
+  script:
+    - npm ci
+    - npm test
+  artifacts:
+    when: always
+    reports:
+      junit: reports/junit.xml

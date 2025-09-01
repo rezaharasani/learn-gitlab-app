@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/d95f54c1-7c0f-46d5-9797-6a795a16f84b/deploy-status)](https://app.netlify.com/projects/deploy-gitlab-cicd/deploys)
+
 # Learn GitLab CI/CD
 
 This simple web application uses React + Vite.

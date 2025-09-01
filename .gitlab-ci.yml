@@ -1,9 +1,10 @@
 stages:
   - build
   - test
+  - deploy
 
-build:
-  image: node:24.7.0-alpine
+build_website:
+  image: node:22-alpine
   stage: build
   script:
     - node --version
@@ -11,27 +12,17 @@ build:
     - npm ci
     - npm run build
   artifacts:
-    paths:
+    paths: 
       - build/
 
-test_artifacts:
+test_artifact:
   image: alpine
   stage: test
   script:
     - test -f build/index.html
 
-test_service_healthy:
-  image: node:24.7.0-alpine
-  stage: test
-  script:
-    - apk add curl
-    - npm install -g serve
-    - serve -s build &
-    - sleep 10
-    - curl -I localhost:3000
-
-test_unit:
-  image: node:24.7.0-alpine
+unit_tests:
+  image: node:22-alpine
   stage: test
   script:
     - npm ci
@@ -40,3 +31,19 @@ test_unit:
     when: always
     reports:
       junit: reports/junit.xml
+
+netlify:
+  image: node:22-alpine
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+  variables:
+    NETLIFY_SITE_ID: 'd95f54c1-7c0f-46d5-9797-6a795a16f84b'
+  script:
+    - npm install -g netlify-cli
+    - netlify --version
+    - netlify status
+    - echo "Deploying to site id $NETLIFY_SITE_ID"
+    - netlify deploy --prod --dir build
+    - apk add curl
+    - curl 'https://vdespa5-learn-gitlab.netlify.app/' | grep 'GitLab'

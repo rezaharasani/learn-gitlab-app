@@ -49,12 +49,18 @@ netlify_review:
     - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
   before_script: 
     - npm install -g netlify-cli
-    - apk add curl
+    - apk add curl jq
   script:
     - netlify --version
     - netlify status
     - echo "Deploying to site id $NETLIFY_SITE_ID"
-    - netlify deploy --dir build --no-build
+    - netlify deploy --dir build --no-build --json | tee deploy-result.json
+    - REVIEW_URL=$(jq -r '.deploy_url' deploy-result.json)
+    - echo $REVIEW_URL
+    - curl $REVIEW_URL | grep 'GitLab'
+  artifacts:
+    paths: 
+      - deploy-result.json
 
 netlify_staging:
   image: node:22-alpine
@@ -85,4 +91,5 @@ netlify_prod:
     - echo "Deploying to site id $NETLIFY_SITE_ID"
     - netlify deploy --prod --dir build --no-build
     - curl 'https://site-gitlab-cicd.netlify.app/' | grep 'GitLab'
+  
   

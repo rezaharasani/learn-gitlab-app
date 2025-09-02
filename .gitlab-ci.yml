@@ -47,8 +47,9 @@ netlify_staging:
   script:
     - netlify --version
     - netlify status
+    - netlify deploy --help
     - echo "Deploying to site id $NETLIFY_SITE_ID"
-    - netlify deploy --alias=staging --dir=build --skip-build
+    - netlify deploy --alias staging --dir build --no-build
     - curl 'https://staging--site-gitlab-cicd.netlify.app/' | grep 'GitLab'
 
 netlify_prod:
@@ -63,6 +64,6 @@ netlify_prod:
     - netlify --version
     - netlify status
     - echo "Deploying to site id $NETLIFY_SITE_ID"
-    - netlify deploy --prod --dir=build --skip-build
+    - netlify deploy --prod --dir build --no-build
     - curl 'https://site-gitlab-cicd.netlify.app/' | grep 'GitLab'
   

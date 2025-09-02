@@ -27,15 +27,12 @@ function App() {
         <p>
           Hint: Edit <code>src/App.jsx</code> to make chnages to this page.
         </p>
-        <p>
-          In version 2, we change nothing. This version just used for testing revert and cherry-pick git concepts.
-        </p>
       </div>
       <p className="read-the-docs">
         Created by Valentin Despa. 
       </p>
       <p className="read-the-docs">
-        Application version: 2
+        Application version: 1
       </p>
     </>
   )

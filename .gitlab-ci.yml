@@ -47,6 +47,9 @@ netlify_review:
   stage: deploy_review
   rules:
     - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
+  environment:
+    name: preview/$CI_COMMIT_REF_SLUG 
+    url: $REVIEW_URL
   before_script: 
     - npm install -g netlify-cli
     - apk add curl jq
@@ -58,9 +61,11 @@ netlify_review:
     - REVIEW_URL=$(jq -r '.deploy_url' deploy-result.json)
     - echo $REVIEW_URL
     - curl $REVIEW_URL | grep 'GitLab'
+    - echo "REVIEW_URL=$REVIEW_URL" > deploy.env
+    - cat deploy.env
   artifacts:
-    paths: 
-      - deploy-result.json
+    reports:
+      dotenv: deploy.env
 
 netlify_staging:
   image: node:22-alpine

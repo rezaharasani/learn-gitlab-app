@@ -4,6 +4,7 @@ variables:
 stages:
   - build
   - test
+  - deploy_review
   - deploy_staging
   - deploy_prod
 
@@ -36,6 +37,18 @@ unit_tests:
     reports:
       junit: reports/junit.xml
 
+netlify_review:
+  image: node:22-alpine
+  stage: deploy_review
+  before_script: 
+    - npm install -g netlify-cli
+    - apk add curl
+  script:
+    - netlify --version
+    - netlify status
+    - echo "Deploying to site id $NETLIFY_SITE_ID"
+    - netlify deploy --dir build --no-build
+
 netlify_staging:
   image: node:22-alpine
   stage: deploy_staging
@@ -47,7 +60,6 @@ netlify_staging:
   script:
     - netlify --version
     - netlify status
-    - netlify deploy --help
     - echo "Deploying to site id $NETLIFY_SITE_ID"
     - netlify deploy --alias staging --dir build --no-build
     - curl 'https://staging--site-gitlab-cicd.netlify.app/' | grep 'GitLab'

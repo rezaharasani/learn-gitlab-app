@@ -1,3 +1,8 @@
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+
 variables:
   NETLIFY_SITE_ID: 'd95f54c1-7c0f-46d5-9797-6a795a16f84b'
 
@@ -40,6 +45,8 @@ unit_tests:
 netlify_review:
   image: node:22-alpine
   stage: deploy_review
+  rules:
+    - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
   before_script: 
     - npm install -g netlify-cli
     - apk add curl

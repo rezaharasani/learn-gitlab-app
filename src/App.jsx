@@ -25,6 +25,9 @@ function App() {
           Dive into the world of continuous integration and continuous delivery (CI/CD) by deploying this simple app with GitLab. Whether you’re a developer, a project manager, or just curious about DevOps practices, this course will guide you through the fundamentals of GitLab CI/CD.
         </p>
         <p>
+          Note to self: I am really learning a lot about GitLab CI/CD with this course.
+        </p>
+        <p>
           Hint: Edit <code>src/App.jsx</code> to make chnages to this page.
         </p>
         <p>

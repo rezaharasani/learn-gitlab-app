@@ -19,14 +19,14 @@ function App() {
           Dive into the world of continuous integration and continuous delivery (CI/CD) by deploying this simple app with GitLab. Whether you’re a developer, a project manager, or just curious about DevOps practices, this course will guide you through the fundamentals of GitLab CI/CD.
         </p>
         <p>
-          Note to self: I am really learning a lot about GitLab CI/CD with this course.
+          Note to self: I'm learning a great deal about GitLab CI/CD through this course.
         </p>
         <p>
-          Hint: Edit <code>src/App.jsx</code> to make chnages to this page.
+          Hint: Edit <code>src/App.jsx</code> to make changes to this page.
         </p>
         <p>
-          In version 2, we change nothing. This version just used for testing revert and cherry-pick git concepts.
-          This release is reverted prevoius release from main branch. Just for watching the results.
+          In version 2, we change nothing. This version is used for testing the revert and cherry-pick git concepts.
+          This release reverts the previous release from the main branch. Just for watching the results.
         </p>
       </div>
       <p className="read-the-docs">

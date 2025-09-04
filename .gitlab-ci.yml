@@ -22,8 +22,8 @@ build_docker_netlify:
   script:
     - docker version
     - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-    - docker build -t $CI_REGISTRY_IMAGE/netlify -f ci/Dockerfile .
-    - docker push $CI_REGISTRY_IMAGE/netlify
+    - docker build -t $CI_REGISTRY_IMAGE/netlify:23.5.0 -f ci/Dockerfile .
+    - docker push $CI_REGISTRY_IMAGE/netlify:23.5.0
     - docker image ls
 
 build_website:
@@ -56,7 +56,7 @@ unit_tests:
       junit: reports/junit.xml
 
 netlify_review:
-  image: $CI_REGISTRY_IMAGE/netlify
+  image: $CI_REGISTRY_IMAGE/netlify:23.5.0
   stage: deploy_review
   rules:
     - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
@@ -97,7 +97,7 @@ post_deploy_review:
       junit: reports/playwright-junit.xml
 
 netlify_staging:
-  image: $CI_REGISTRY_IMAGE/netlify
+  image: $CI_REGISTRY_IMAGE/netlify:23.5.0
   stage: deploy_staging
   rules:
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
@@ -110,7 +110,7 @@ netlify_staging:
     - curl $CI_ENVIRONMENT_URL | grep 'GitLab'
 
 netlify_prod:
-  image: $CI_REGISTRY_IMAGE/netlify
+  image: $CI_REGISTRY_IMAGE/netlify:23.5.0
   stage: deploy_prod
   rules:
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH

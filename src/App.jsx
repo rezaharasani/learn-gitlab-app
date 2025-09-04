@@ -30,7 +30,7 @@ function App() {
         </p>
       </div>
       <p className="read-the-docs">
-        Created by Valentin Despa. 
+        Created by Valentin Despa.
       </p>
       <p className="read-the-docs">
         Application version: 2

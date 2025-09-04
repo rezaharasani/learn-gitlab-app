@@ -67,6 +67,7 @@ The following commands need to run `nodejs` project on project root directory:
     ```
 
 * **Step5**: At last, enter `http://localhost:3000` link on your browser to show following page:
-  ![NodeJs_Project_FirstPage.jpg](src/img/NodeJs_Project_FirstPage.jpg)
+
+  ![gitlab-cicd-version2.png](src/img/gitlab-cicd-version2.png)
 
 As you can see, above page represents application version 1.

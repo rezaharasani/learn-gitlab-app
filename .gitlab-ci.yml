@@ -4,7 +4,7 @@ workflow:
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
 
 variables:
-  NETLIFY_SITE_ID: 'd95f54c1-7c0f-46d5-9797-6a795a16f84b'
+  NETLIFY_SITE_ID: "d95f54c1-7c0f-46d5-9797-6a795a16f84b"
 
 stages:
   - build
@@ -22,7 +22,7 @@ build_website:
     - npm ci
     - npm run build
   artifacts:
-    paths: 
+    paths:
       - build/
 
 test_artifact:
@@ -48,9 +48,9 @@ netlify_review:
   rules:
     - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
   environment:
-    name: preview/$CI_COMMIT_REF_SLUG 
+    name: preview/$CI_COMMIT_REF_SLUG
     url: $REVIEW_URL
-  before_script: 
+  before_script:
     - npm install -g netlify-cli
     - apk add curl jq
   script:
@@ -73,9 +73,9 @@ netlify_staging:
   rules:
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
   environment:
-    name: staging 
-    url: 'https://staging--site-gitlab-cicd.netlify.app/'
-  before_script: 
+    name: staging
+    url: "https://staging--site-gitlab-cicd.netlify.app/"
+  before_script:
     - npm install -g netlify-cli
     - apk add curl
   script:
@@ -91,7 +91,7 @@ netlify_prod:
   rules:
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
   environment: production
-  before_script: 
+  before_script:
     - npm install -g netlify-cli
     - apk add curl
   script:
@@ -100,5 +100,3 @@ netlify_prod:
     - echo "Deploying to site id $NETLIFY_SITE_ID"
     - netlify deploy --prod --dir build --no-build
     - curl $CI_ENVIRONMENT_URL | grep 'GitLab'
-  
-  

@@ -70,4 +70,4 @@ The following commands need to run `nodejs` project on project root directory:
 
   ![gitlab-cicd-version2.png](src/img/gitlab-cicd-version2.png)
 
-As you can see, above page represents application version 1.
+As you can see, above page represents application version 2.

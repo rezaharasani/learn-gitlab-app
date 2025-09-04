@@ -67,6 +67,15 @@ netlify_review:
     reports:
       dotenv: deploy.env
 
+e2e:
+  image: mcr.microsoft.com/playwright:v1.49.1-noble
+  stage: .pre
+  variables:
+    APP_BASE_URL: 'https://site-gitlab-cicd.netlify.app/'
+  script:
+    - npm ci
+    - npm run e2e
+
 netlify_staging:
   image: node:22-alpine
   stage: deploy_staging

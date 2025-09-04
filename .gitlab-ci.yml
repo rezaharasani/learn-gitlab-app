@@ -1,10 +1,9 @@
 workflow:
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
 
 variables:
-  NETLIFY_SITE_ID: "d95f54c1-7c0f-46d5-9797-6a795a16f84b"
   VITE_APP_VERSION: $CI_COMMIT_SHORT_SHA
 
 stages:
@@ -15,14 +14,16 @@ stages:
   - deploy_staging
   - deploy_prod
 
-test_docker:
+build_docker_netlify:
   image: docker:27
   stage: .pre
   services:
     - docker:27-dind
   script:
     - docker version
-    - docker build -t netlify -f ci/Dockerfile .
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE/netlify -f ci/Dockerfile .
+    - docker push $CI_REGISTRY_IMAGE/netlify
     - docker image ls
 
 build_website:
@@ -55,16 +56,13 @@ unit_tests:
       junit: reports/junit.xml
 
 netlify_review:
-  image: node:22-alpine
+  image: $CI_REGISTRY_IMAGE/netlify
   stage: deploy_review
   rules:
     - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
   environment:
     name: preview/$CI_COMMIT_REF_SLUG
     url: $REVIEW_URL
-  before_script:
-    - npm install -g netlify-cli
-    - apk add curl jq
   script:
     - netlify --version
     - netlify status
@@ -99,16 +97,11 @@ post_deploy_review:
       junit: reports/playwright-junit.xml
 
 netlify_staging:
-  image: node:22-alpine
+  image: $CI_REGISTRY_IMAGE/netlify
   stage: deploy_staging
   rules:
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
-  environment:
-    name: staging
-    url: "https://staging--site-gitlab-cicd.netlify.app/"
-  before_script:
-    - npm install -g netlify-cli
-    - apk add curl
+  environment: staging
   script:
     - netlify --version
     - netlify status
@@ -117,14 +110,11 @@ netlify_staging:
     - curl $CI_ENVIRONMENT_URL | grep 'GitLab'
 
 netlify_prod:
-  image: node:22-alpine
+  image: $CI_REGISTRY_IMAGE/netlify
   stage: deploy_prod
   rules:
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
   environment: production
-  before_script:
-    - npm install -g netlify-cli
-    - apk add curl
   script:
     - netlify --version
     - netlify status

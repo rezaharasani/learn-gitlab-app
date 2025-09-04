@@ -10,7 +10,6 @@ stages:
   - build
   - test
   - deploy_review
-  - post_deploy_review
   - deploy_staging
   - deploy_prod
 
@@ -70,9 +69,9 @@ netlify_review:
 
 e2e:
   image: mcr.microsoft.com/playwright:v1.49.1-noble
-  stage: post_deploy_review
+  stage: .pre
   variables:
-    APP_BASE_URL: $REVIEW_URL
+    APP_BASE_URL: 'https://site-gitlab-cicd.netlify.app/'
   script:
     - npm ci
     - npm run e2e

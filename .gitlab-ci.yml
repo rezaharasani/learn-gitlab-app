@@ -15,6 +15,16 @@ stages:
   - deploy_staging
   - deploy_prod
 
+test_docker:
+  image: docker:27
+  stage: .pre
+  services:
+    - docker:27-dind
+  script:
+    - docker version
+    - docker build -t netlify -f ci/Dockerfile .
+    - docker image ls
+
 build_website:
   image: node:22-alpine
   stage: build

@@ -10,6 +10,7 @@ stages:
   - build
   - test
   - deploy_review
+  - post_deploy_review
   - deploy_staging
   - deploy_prod
 
@@ -67,14 +68,24 @@ netlify_review:
     reports:
       dotenv: deploy.env
 
-e2e:
+post_deploy_review:
   image: mcr.microsoft.com/playwright:v1.49.1-noble
-  stage: .pre
+  stage: post_deploy_review
+  rules:
+    - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
   variables:
-    APP_BASE_URL: 'https://site-gitlab-cicd.netlify.app/'
+    APP_BASE_URL: $REVIEW_URL
   script:
+    - echo $REVIEW_URL
+    - echo $APP_BASE_URL
     - npm ci
     - npm run e2e
+  artifacts:
+    when: always
+    paths:
+      - reports/
+    reports:
+      junit: reports/playwright-junit.xml
 
 netlify_staging:
   image: node:22-alpine

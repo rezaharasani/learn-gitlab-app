@@ -29,6 +29,7 @@ build_docker_netlify:
     - docker build -t $NETLIFY_DOCKER_IMAGE -f ci/Dockerfile .
     - docker push $NETLIFY_DOCKER_IMAGE
     - docker tag $NETLIFY_DOCKER_IMAGE $CI_REGISTRY_IMAGE/netlify:latest
+    - docker push $CI_REGISTRY_IMAGE/netlify:latest
     - docker image ls
 
 build_website:

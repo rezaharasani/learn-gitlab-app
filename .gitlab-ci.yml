@@ -13,7 +13,7 @@ build_docker_image:
   script:
     - echo 'Getting latest netlify npm package version:'
     - curl https://www.npmjs.com/package/netlify > netlify-out.txt
-    - egrep -o netlify-out.txt > netlify-versions.txt
+    - egrep -o '[0-9]{2}\.[0-9]{1,2}\.[0-9]{1,2}' netlify-out.txt > netlify-versions.txt
     - NETLIFY_VERSION=$(head -1 netlify-versions.txt)
     - echo $NETLIFY_VERSION
     #- NETLIFY_VERSION=$(curl https://www.npmjs.com/package/netlify | egrep -o '[0-9]{2}\.[0-9]{1,2}\.[0-9]{1,2}' | head -1)

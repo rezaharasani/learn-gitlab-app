@@ -2,5 +2,5 @@ FROM node:22-alpine
 ARG BUILD_NETLIFY_VERSION
 ENV NETLIFY_VERSION=$BUILD_NETLIFY_VERSION
 
-RUN npm install -g netlify-cli@NETLIFY_VERSION
+RUN npm install -g netlify-cli@$NETLIFY_VERSION
 RUN apk add curl jq

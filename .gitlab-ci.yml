@@ -1,129 +1,24 @@
-workflow:
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
-
-variables:
-  VITE_APP_VERSION: $CI_COMMIT_SHORT_SHA
-  NETLIFY_IMAGE_VERSION: 23.5.0
-  NETLIFY_DOCKER_IMAGE: '$CI_REGISTRY_IMAGE/netlify:$NETLIFY_IMAGE_VERSION'
-
 stages:
-  - build
-  - test
-  - deploy_review
-  - post_deploy_review
-  - deploy_staging
-  - deploy_prod
+    - build
 
-build_docker_netlify:
-  image: docker:27
-  stage: .pre
+build_docker_image:
+  image: docker:28
+  stage: build
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
   services:
-    - docker:27-dind
+    - docker:28-dind
+  before_script:
+    - apk add curl
   script:
+    - echo "=== Getting latest netlify npm package version: ===" 
+    - NETLIFY_VERSION=$(curl https://www.npmjs.com/package/netlify | egrep -o '[0-9]{2}\.[0-9]{1,2}\.[0-9]{1,2}' | head -1)
+    - NETLIFY_DOCKER_IMAGE=$CI_REGISTRY_IMAGE/netlify:$NETLIFY_VERSION
     - docker version
     - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-    - docker build -t $NETLIFY_DOCKER_IMAGE -f ci/Dockerfile .
+    - docker build --build-arg BUILD_NETLIFY_VERSION=$NETLIFY_VERSION -t $NETLIFY_DOCKER_IMAGE -f ci/Dockerfile .
     - docker push $NETLIFY_DOCKER_IMAGE
     - docker tag $NETLIFY_DOCKER_IMAGE $CI_REGISTRY_IMAGE/netlify:latest
     - docker push $CI_REGISTRY_IMAGE/netlify:latest
     - docker image ls
 
-build_website:
-  image: node:22-alpine
-  stage: build
-  script:
-    - node --version
-    - npm --version
-    - npm ci
-    - npm run build
-  artifacts:
-    paths:
-      - build/
-
-test_artifact:
-  image: alpine
-  stage: test
-  script:
-    - test -f build/index.html
-
-unit_tests:
-  image: node:22-alpine
-  stage: test
-  script:
-    - npm ci
-    - npm test
-  artifacts:
-    when: always
-    reports:
-      junit: reports/junit.xml
-
-netlify_review:
-  image: $NETLIFY_DOCKER_IMAGE
-  stage: deploy_review
-  rules:
-    - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
-  environment:
-    name: preview/$CI_COMMIT_REF_SLUG
-    url: $REVIEW_URL
-  script:
-    - netlify --version
-    - netlify status
-    - echo "Deploying to site id $NETLIFY_SITE_ID"
-    - netlify deploy --dir build --no-build --json | tee deploy-result.json
-    - REVIEW_URL=$(jq -r '.deploy_url' deploy-result.json)
-    - echo $REVIEW_URL
-    - curl $REVIEW_URL | grep 'GitLab'
-    - echo "REVIEW_URL=$REVIEW_URL" > deploy.env
-    - cat deploy.env
-  artifacts:
-    reports:
-      dotenv: deploy.env
-
-post_deploy_review:
-  image: mcr.microsoft.com/playwright:v1.49.1-noble
-  stage: post_deploy_review
-  rules:
-    - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
-  variables:
-    APP_BASE_URL: $REVIEW_URL
-  script:
-    - echo $REVIEW_URL
-    - echo $APP_BASE_URL
-    - npm ci
-    - npm run e2e
-  artifacts:
-    when: always
-    paths:
-      - reports/
-    reports:
-      junit: reports/playwright-junit.xml
-
-netlify_staging:
-  image: $NETLIFY_DOCKER_IMAGE
-  stage: deploy_staging
-  rules:
-    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
-  environment: staging
-  script:
-    - netlify --version
-    - netlify status
-    - echo "Deploying to site id $NETLIFY_SITE_ID"
-    - netlify deploy --alias staging --dir build --no-build
-    - curl $CI_ENVIRONMENT_URL | grep 'GitLab'
-
-netlify_prod:
-  image: $NETLIFY_DOCKER_IMAGE
-  stage: deploy_prod
-  rules:
-    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
-  environment: production
-  script:
-    - netlify --version
-    - netlify status
-    - echo "Deploying to site id $NETLIFY_SITE_ID"
-    - netlify deploy --prod --dir build --no-build
-    - curl $CI_ENVIRONMENT_URL | grep 'GitLab'

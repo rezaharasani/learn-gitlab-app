@@ -5,7 +5,7 @@ workflow:
 
 variables:
   VITE_APP_VERSION: $CI_COMMIT_SHORT_SHA
-  NETLIFY_IMAGE_VERSION: 23.5.0
+  NETLIFY_IMAGE_VERSION: latest
   NETLIFY_DOCKER_IMAGE: '$CI_REGISTRY_IMAGE/netlify:$NETLIFY_IMAGE_VERSION'
 
 stages:
@@ -15,22 +15,6 @@ stages:
   - post_deploy_review
   - deploy_staging
   - deploy_prod
-
-build_docker_netlify:
-  image: docker:27
-  stage: .pre
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-  services:
-    - docker:27-dind
-  script:
-    - docker version
-    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-    - docker build -t $NETLIFY_DOCKER_IMAGE -f ci/Dockerfile .
-    - docker push $NETLIFY_DOCKER_IMAGE
-    - docker tag $NETLIFY_DOCKER_IMAGE $CI_REGISTRY_IMAGE/netlify:latest
-    - docker push $CI_REGISTRY_IMAGE/netlify:latest
-    - docker image ls
 
 build_website:
   image: node:22-alpine

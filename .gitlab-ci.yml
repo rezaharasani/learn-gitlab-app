@@ -12,15 +12,19 @@ build_docker_image:
     - apk add curl
   script:
     - echo 'Getting latest netlify npm package version:'
-    - NETLIFY_VERSION=$(curl https://www.npmjs.com/package/netlify | egrep -o '[0-9]{2}\.[0-9]{1,2}\.[0-9]{1,2}' | head -1)
-    - NETLIFY_DOCKER_IMAGE=$CI_REGISTRY_IMAGE/netlify:$NETLIFY_VERSION
-    - echo $NETLIFY_DOCKER_IMAGE
-    - docker version
-    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-    - docker build --build-arg BUILD_NETLIFY_VERSION=$NETLIFY_VERSION -t $NETLIFY_DOCKER_IMAGE .
-    - docker push $NETLIFY_DOCKER_IMAGE
-    - docker tag $NETLIFY_DOCKER_IMAGE $CI_REGISTRY_IMAGE/netlify:latest
-    - docker push $CI_REGISTRY_IMAGE/netlify:latest
-    - docker image ls
+    - curl https://www.npmjs.com/package/netlify > netlify-out.txt
+    - egrep -o netlify-out.txt > netlify-versions.txt
+    - NETLIFY_VERSION=$(head -1 netlify-versions.txt)
+    - echo $NETLIFY_VERSION
+    #- NETLIFY_VERSION=$(curl https://www.npmjs.com/package/netlify | egrep -o '[0-9]{2}\.[0-9]{1,2}\.[0-9]{1,2}' | head -1)
+    #- NETLIFY_DOCKER_IMAGE=$CI_REGISTRY_IMAGE/netlify:$NETLIFY_VERSION
+    #- echo $NETLIFY_DOCKER_IMAGE
+    #- docker version
+    #- echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    #- docker build --build-arg BUILD_NETLIFY_VERSION=$NETLIFY_VERSION -t $NETLIFY_DOCKER_IMAGE .
+    #- docker push $NETLIFY_DOCKER_IMAGE
+    #- docker tag $NETLIFY_DOCKER_IMAGE $CI_REGISTRY_IMAGE/netlify:latest
+    #- docker push $CI_REGISTRY_IMAGE/netlify:latest
+    #- docker image ls
 
 

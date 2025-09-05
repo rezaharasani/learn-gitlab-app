@@ -12,7 +12,9 @@ build_docker_image:
     - apk add curl
   script:
     - echo 'Getting latest netlify npm package version:'
+    - ls -la
     - NETLIFY_VERSION=$(curl https://www.npmjs.com/package/netlify | egrep -o '[0-9]{2}\.[0-9]{1,2}\.[0-9]{1,2}' | head -1)
+    - ls -la
     - NETLIFY_DOCKER_IMAGE=$CI_REGISTRY_IMAGE/netlify:$NETLIFY_VERSION
     - docker version
     - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY

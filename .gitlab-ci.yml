@@ -11,7 +11,7 @@ build_docker_image:
   before_script:
     - apk add curl
   script:
-    - echo "=== Getting latest netlify npm package version: ===" 
+    - echo 'Getting latest netlify npm package version:'
     - NETLIFY_VERSION=$(curl https://www.npmjs.com/package/netlify | egrep -o '[0-9]{2}\.[0-9]{1,2}\.[0-9]{1,2}' | head -1)
     - NETLIFY_DOCKER_IMAGE=$CI_REGISTRY_IMAGE/netlify:$NETLIFY_VERSION
     - docker version
